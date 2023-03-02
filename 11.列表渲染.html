@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>列表渲染</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          listArray: ["ni", "wo", "ta"],
+          listObject: { first: "hh", second: "ee", third: "rr" },
+        };
+      },
+      methods: {
+        handleAddBtnClick() {
+          //使用数组变更函数
+          // this.listArray.push("vv"); //尾部增加
+          // this.listArray.pop(); //尾部删除
+          // this.listArray.shift();  //头部删除
+          // this.listArray.unshift("nn"); //头部增加
+          // this.listArray.reverse(); //头尾反转
+          // this.listArray.sort(); //排序
+
+          // this.listArray=['bye','abc','efg']; //直接替换数组
+          // this.listArray=['bye'].concat(['abc','efg']).filter(item=>item === 'abc')//替换后过滤
+
+          // this.listArray[1]="被替换了"//直接更新数组内容
+
+          //对象
+          this.listObject.third = "hello"; //直接添加对象得内容,也可以自动展示出来
+        },
+      },
+      template: `<div v-for="item in listArray" >{{item}}</div><br/>
+                 <div v-for="(item,index) in listArray" :key="index">{{item}}--{{index}}</div><br/>
+                 <div v-for="(value) in listObject">{{value}}</div><br/>
+                 <template v-for="(value ,key,index) in listObject" :key="index" >
+                  <div v-if="key !== 'second'">{{value}}--{{key}}--{{index}}</div>
+                  </template>
+                 <button @click="handleAddBtnClick">新增</button>
+                 <span v-for="item1 in 10">{{item1}}</span>
+      `,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

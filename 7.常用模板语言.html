@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@next"></script>
+    <title>模板语言</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          msg: "<b>Hello</b>",
+          disable:true,
+          show:true,
+          name:'title',
+          event:'click',//动态参数
+        };
+      },
+      template: `<p v-html="msg" v-bind:title="msg"></p>
+                <p v-once>{{msg}}</p>
+                <input v-bind:disabled="disable" />
+                <div v-if="show">{{msg}}</div>
+                <div @[event]="handleClick" :[name]="msg">click</div>
+                <form actions="https://www.baidu.com" @click.prevent="handleClick">
+                    <button type="submit">提交</button>
+                </form>
+      `,
+      methods: {
+        handleClick(){
+            alert('click');
+        }
+      },
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

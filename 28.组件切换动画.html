@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>组件切换动画</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+      .v-enter-from,
+      .v-leave-to {
+        opacity: 0;
+      }
+      .v-enter-active,
+      .v-leave-active {
+        transition: opacity 3s ease-out;
+      }
+      .v-enter-to,
+      .v-leave-from {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    //多个单元素标签之间的切换
+    //多个单组件之间的切换
+    const app = Vue.createApp({
+      data() {
+        return {
+          show: false,
+        };
+      },
+      methods: {
+        handleClick() {
+          this.show = !this.show;
+        },
+      },
+      //mode="out-in" 可设置先隐藏再显示
+      //appear 初次显示页面的时候也有动画效果
+      template: `
+      <div>
+        <transition mode="out-in" appear>
+            <div v-if="show">Hello World!</div>
+            <div v-else="show">Bye World</div>
+        </transition>
+        <transition  mode="out-in">
+            <one v-if="show" />
+            <two v-else="show" />
+        </transition>
+        <button @click="handleClick">切换</button>
+    </div>
+      `,
+    });
+    app.component("one", {
+      template: `<div>one</div>`,
+    });
+    app.component("two", {
+      template: `<div>two</div>`,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

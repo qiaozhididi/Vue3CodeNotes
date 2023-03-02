@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>表单双向绑定</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    //input textarea checkbox radio select
+    //修饰符 lazy, number,trim
+    const app = Vue.createApp({
+      data() {
+        return {
+          msg: "hello",
+          checked: [],
+          radioed: "",
+          selection: "",
+          options: [
+            { text: "a", value: "a" },
+            { text: "b", value: "b" },
+            { text: "c", value: "c" },
+            { text: "d", value: "d" },
+          ],
+          msg1: "world",
+          msg2: "123",
+        };
+      },
+      template: `<div>
+            {{msg}}
+            <input v-model="msg" /><br><br>
+            <textarea v-model="msg" /><br><br>
+            {{checked}}
+           one <input type="checkbox" v-model="checked" value="one" />
+           two <input type="checkbox" v-model="checked" value="two" />
+           three <input type="checkbox" v-model="checked" value="three" />
+           <br><br>
+           {{radioed}}
+           four <input type="radio" v-model="radioed" value="four" />
+           five <input type="radio" v-model="radioed" value="five" />
+           six <input type="radio" v-model="radioed" value="six" />
+           <br><br>
+           {{selection}}
+           <select v-model="selection" multiple>
+            <option disabled value="">请选择</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            </select>
+            <br><br>
+            {{checked}}
+            <select v-model='checked' multiple>
+                <option v-for="item in options" :value="item.value">{{item.text}}</option>
+            </select>
+            <br><br>
+            {{msg1}}
+            <input type=checkbox v-model="msg1" true-value="hello" false-value="world"/>
+            <br><br>
+            {{msg2}}
+            <input v-model.trim="msg2" />
+        </div>
+        `,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

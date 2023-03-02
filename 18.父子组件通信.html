@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>父子组件通信</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          count: 1,
+        };
+      },
+      methods: {
+        // ,params1,params2
+        // handleAdd(count) {
+        //   // this.count+=params2;
+        //   this.count = count;
+        // },
+      },
+      // <counter :modelValue="count" @add="handleAdd"/> 
+      template: `<div>
+          <counter v-model="count" />
+        </div>
+        `,
+    });
+    app.component("counter", {
+      props: ["modelValue"],
+      // emits: {
+      //   add: (count) => {
+      //     if (count < 0) return true;
+      //     else return false;
+      //   },
+      // },
+      // emits: ["add"],
+      methods: {
+        handleItemClick() {
+          // this.$emit('add',2,3);
+          // this.$emit("add", this.count + 4);
+          this.$emit("update:modelValue", this.modelValue + 5);
+        },
+      },
+      template: `<div @click="handleItemClick">{{modelValue}}</div>`,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

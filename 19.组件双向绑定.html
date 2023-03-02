@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>组件双向绑定</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          count: "a",
+          //   count1: 1,
+        };
+      },
+      //   <counter v-model:count="count" v-model:count1="count1" />
+      template: `<div>
+                <counter v-model.uppercase="count" />
+        </div>`,
+    });
+    app.component("counter", {
+      //   props: ["count", "count1"],
+      props: {
+        modelValue: String,
+        modelModifiers: {
+          default: () => ({}),
+        },
+      },
+      methods: {
+        handleClick() {
+          let newValue = this.modelValue + "b";
+          if (this.modelModifiers.uppercase) {
+            newValue = newValue.toUpperCase();
+          }
+          this.$emit("update:modelValue", newValue);
+        },
+        // handleClick1() {
+        //   this.$emit("update:count1", this.count1 + 2);
+        // },
+      },
+      template: `<div>
+                <div @click="handleClick">{{modelValue}}</div>
+            </div>
+      `,
+      //   <div @click="handleClick1">{{count1}}</div>
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

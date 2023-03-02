@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue-CSS基础过渡动画</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+      @keyframes leftToRight {
+        0% {
+          transform: translate(-100px);
+        }
+        50% {
+          transform: translate(-50px);
+        }
+        0% {
+          transform: translate(0px);
+        }
+      }
+      .animation {
+        animation: leftToRight 3s;
+      }
+
+      .transition {
+        transition: 3s background-color ease;
+      }
+      .blue {
+        background-color: blue;
+      }
+      .green {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    //过渡，动画
+    const app = Vue.createApp({
+      data() {
+        return {
+          animate: {
+            animation: false,
+            transition: true,
+            blue: true,
+            green: false,
+          },
+          styleObj: {
+            background: "red",
+          },
+        };
+      },
+      methods: {
+        handleClick() {
+          this.animate.animation = !this.animate.animation;
+          this.animate.blue = !this.animate.blue;
+          this.animate.green = !this.animate.green;
+        },
+        handleClick1() {
+          if (this.styleObj.background === "red") {
+            this.styleObj.background = "yellow";
+          } else {
+            this.styleObj.background = "red";
+          }
+        },
+      },
+      template: `<div :class="animate">Hello World!</div>
+                <button @click="handleClick">点击</button>
+                <div class="transition" :style="styleObj" @click="handleClick1">你好</div>
+
+      `,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

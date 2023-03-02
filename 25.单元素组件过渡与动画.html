@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <title>单元素过渡动画</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+      @keyframes shake {
+        0% {
+          transform: translate(-100px);
+        }
+        50% {
+          transform: translate(-50px);
+        }
+        100% {
+          transform: translate(50px);
+        }
+      }
+      /* .v-enter-from,.v-enter-to,v-leave-from,.v-leave-to */
+      /* .hello, */
+      .v-enter-active {
+        animation: shake 10s;
+        transition: color 3s ease-in;
+      }
+      .v-leave-active {
+        animation: shake 10s;
+        transition: all 3s ease-in;
+        color: red;
+      }
+      .v-enter-from {
+        color: red;
+      }
+      /* .h-leave-active {
+        animation:shake 3s ;
+      } */
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    //单元素，单组件的入场出场动画
+    const app = Vue.createApp({
+      data() {
+        return {
+          show: false,
+        };
+      },
+      methods: {
+        handleClick() {
+          this.show = !this.show;
+        },
+        handleBeforeEnter(el) {
+          el.style.color = "red";
+        },
+        handleEnterActive(el, done) {
+          const animation = setInterval(() => {
+            const color = el.style.color;
+            if (color === "red") {
+              el.style.color = "green";
+            } else {
+              el.style.color = "red";
+            }
+          }, 1000);
+          setTimeout(()=>{
+            clearInterval(animation);
+            done();//只有调用done()才能告诉after-enter已经执行结束了
+          },5000)
+        },
+        handleAfterEnter(el){
+            alert("123")
+        },
+      },
+      //<transition></transition>
+      //transition可定义前缀 v 为其他 name="" 或者用enter-active-class="" 诸如此类
+      //第三方css库的使用enter-active-class="animate__animated animate__flash"
+      // type="transition" 可以设置以transition的时间为准
+      //:duration="1000"直接设置时长，可以为对象{"enter":1000,leave:3000}
+      //:css="false" 不使用css动画 可使用js动画
+      template: `<div>
+            <transition 
+            :css="false"
+            @before-enter="handleBeforeEnter"
+            @enter="handleEnterActive"
+            @after-enter="handleAfterEnter"
+            @before-leave="handleBeforeLeave"
+            @leave="handleAfterLeave"
+            @after-leave="handleAfterLeave"
+            >
+                <div v-if="show">Hello World!</div>
+            </transition>
+                <button @click="handleClick">点击</button>
+            </div>
+                `,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

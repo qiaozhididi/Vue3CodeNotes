@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@next"></script>
+    <title>样式绑定</title>
+    <style>
+      .red {
+        color: red;
+      }
+      .blue {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          classString: "blue", //字符串
+          classObject: { red: true, blue: false }, //对象
+          classArray: ["red", "blue", { brown: true }], //数组
+          styleString: "color:orange;background:#ccc",
+          styleObject: { color: "skyblue", background:'yellow' },
+        };
+      },
+      template: `<div :class="classString">hello</div>
+                 <div :class="classObject">world</div>
+                 <div :class="classArray">world</div>
+                 <demo class="red" />
+                 <div :style="styleString">styleString</div>
+                 <div :style="styleObject">styleObject</div>
+                 `,
+    });
+    app.component("demo", {
+      template: `<div :class="$attrs.class">one</div>
+                    <div>two</div>
+        `,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

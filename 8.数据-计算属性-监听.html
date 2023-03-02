@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@next"></script>
+    <title>数据,计算,监听</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    //computed 和 method 都能实现的一个功能,建议使用computed,因为有缓存,性能较好
+    //computed 和 watcher 都能事项的功能,建议使用computed ,因为更加简洁
+    const app = Vue.createApp({
+      data() {
+        return {
+          msg: "hello",
+          count:9,
+          price:200,
+          newTotal:10,
+        };
+      },
+      methods: {
+        handleClick() {
+          console.log("click", this.msg);
+        },
+        formatString(string){
+            return string.toUpperCase();
+        },
+        //只要页面重新渲染,才会重新计算
+        getTotal() {
+            return this.count * this.price;
+            // return Date.now();
+        }
+      },
+      computed:{
+        //计算属性:当计算属性依赖的内容发生变更时,才会重新执行计算
+        total(){
+            // return Date.now();
+            return this.count * this.price;
+        }
+      },
+      watch:{
+        //price 发生变化的时候,函数会执行.
+            price(next,prev){
+                // setTimeout(()=>{
+                //     console.log("123123123");
+                // },2000)
+                    this.newTotal = next * this.count;
+            }
+      },
+      template: `<div @click="handleClick">{{formatString(msg)}}</div>
+                <p>{{total}}</p>
+                <p style="color:red">{{getTotal()}}</p>
+                <p style="color:blue">{{newTotal}}</p>
+
+      `,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

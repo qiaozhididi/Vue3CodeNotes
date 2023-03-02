@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>组件传值</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          message: "hello world",
+          num: 1234,
+          fun: () => {
+            alert("hello");
+          },
+        };
+      },
+
+      template: `<div>{{message}}</div>
+                <test :content="num"/>
+                <test :content="fun" />
+                <test />
+      `,
+    });
+    app.component("test", {
+      //String Boolean Array Objects Function Symbol
+      //required 必填
+      //default 默认值
+      props: {
+        content: {
+          type: Number,
+          // require: true,
+          // default:123,
+          default:()=>{return "默认值"+543},
+          validator: (value) => {
+            return value < 1000;
+          },
+        },
+      },
+      methods: {
+        handleDivClick() {
+          alert("你好");
+          this.content();
+        },
+      },
+      template: `<div @click="handleDivClick">{{content}}</div>`,
+    });
+    const vm = app.mount("#root");
+  </script>
+</html>

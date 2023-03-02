@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件绑定</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    // event $event
+    //事件修饰符： stop， prevent， capture， self， once， passive
+    //按键修饰符： enter, tab, delete, backspace, space, escape, up, down, left, right 等等
+    //鼠标修饰符： left, right, middle,
+    //精确修饰符： exact
+    const app = Vue.createApp({
+      data() {
+        return {
+          counter: 0,
+        };
+      },
+      methods: {
+        handlePClick() {
+          alert("p");
+        },
+        handleBtnClick(num, e) {
+          console.log(e);
+          this.counter += num;
+        },
+        handleBtnClick1() {
+          alert("2");
+        },
+        handleKeyDown(){
+            console.log("keydown");
+
+        },
+      },
+      template: `<div>
+        <p @click.self="handlePClick">{{counter}}
+        <button @click.stop="handleBtnClick(1,$event)">+1</button>
+        </p>
+        <button @click="counter+=2">+2</button>
+        <button @click="handleBtnClick(1),handleBtnClick1()">两个事件</button>
+        </div>
+        <div @click.ctrl.exact="handlePClick">
+            <input @keydown.enter="handleKeyDown()" />
+        </div>
+        `,
+    });
+
+    const vm = app.mount("#root");
+  </script>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>补充知识</title></title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    //v-once 让某个元素标签只渲染一次
+    //ref 实际上是获取DOM节点 / 组件引用的一个语法
+    //provide / inject
+    const app = Vue.createApp({
+      data() {
+        return {
+          count: 1,
+        };
+      },
+    //   provide:{
+    //     count:1,
+    //   },
+      provide(){
+        return{
+            count:this.count
+        }
+      },
+      mounted() {
+        // console.log(this.$refs.count);
+        // this.$refs.count.innerHTML="123132"
+        // console.log(this.$refs.common.sayHello());
+      },
+      template: `<div @click="count++" v-once>{{count}}</div>
+                <div ref="count">{{count}}</div>
+                <common-item ref="common" />
+                <child :count='count' />
+      `,
+    });
+    app.component("common-item",{
+      methods: {
+        sayHello(){
+            // alert("Hello!");
+        }
+      },
+      template: `<div></div>`,
+    })
+    app.component('child',{
+        // props:['count'],
+        template:`<child-child></child-child>`,
+    })
+    app.component('child-child',{
+        inject:['count'],
+        template:`<div>{{count}}</div>`,
+    })
+    const vm = app.mount("#root");
+  </script>
+</html>
