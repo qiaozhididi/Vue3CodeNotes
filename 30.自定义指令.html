@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义指令</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <style>
+    .content {
+      position: relative;
+      background-color: #ccc;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+  </body>
+  <html>
+    <script>
+      //自定义指令 directive
+      //   const directives = {
+      //     focus: {
+      //       mounted(el) {
+      //         el.focus();
+      //       },
+      //     },
+      //   };//局部
+
+      const app = Vue.createApp({
+        // directives: directives,
+        data() {
+          return {
+            show: true,
+            top:100,
+          };
+        },
+        mounted() {
+          // this.$refs.input.focus();
+        },
+        //         <input v-focus />
+        template: `<div v-if="show">
+            <div v-pos="top" class="content"></div>
+            <input ref="input" />
+            </div>
+        `,
+      });
+      app.directive('pos',(el,binding) => {
+        el.style.top = binding.value + "px";
+      })//简写
+      app.directive("pos", {
+        beforeMount(el) {
+          console.log("beforeMount");
+        },
+        mounted(el,binding) {
+          console.log("mounted");
+          el.focus();
+          el.style.top = binding.value + "px";
+        },
+        beforeUpdate() {
+          console.log("beforeUpdated");
+        },
+        updated(el,binding) {
+          console.log("updated");
+          el.style.top = binding.value + "px";
+        },
+        beforeUnmount() {
+          console.log("beforeUnmount");
+        },
+        unmounted() {
+          console.log("unmounted");
+        },
+      });
+      const vm = app.mount("#root");
+    </script>
+  </html>
+</html>
