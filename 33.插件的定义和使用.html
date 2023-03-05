@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>demo</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <html>
+    <script>
+      // plugin 插件，把通用性的功能封装起来
+      const myPlugin = {
+        install(app, options) {
+          console.log("app,options===", app, options);
+          app.provide('name','QzFrato Z');
+          app.directive('focus',{
+            mounted(el) {
+                el.focus()
+            },
+          })
+          app.mixin({
+            mounted(){
+                console.log('mixin');
+            }
+          })
+          app.config.globalProperties.$sayHello = "hello world" 
+        },
+      };
+      const app = Vue.createApp({
+        data() {
+          return {};
+        },
+        template: `<my-title></my-title>`,
+      });
+      app.component("my-title", {
+        inject:['name'],
+        mounted(){
+            console.log(this.$sayHello);
+        },
+        template: `<div>{{name}}</div>
+                <input v-focus />
+            `,
+      });
+      app.use(myPlugin, { name: "QzFrato" });
+      const vm = app.mount("#root");
+    </script>
+  </html>
+</html>
