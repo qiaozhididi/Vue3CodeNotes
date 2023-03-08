@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Provide,inject</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <html>
+    <script>
+      //provide,inject
+      //   const app = Vue.createApp({
+      //     setup() {
+      //       const { provide, ref, readonly } = Vue;
+      //       const name = ref("QzFrato");
+      //       provide("name", readonly(name));
+      //       provide("changeName", (value) => {
+      //         name.value = value;
+      //       });
+      //       return {};
+      //     },
+      //     template: `<div>
+      //             <child></child>
+      //         </div>`,
+      //   });
+      //   app.component("child", {
+      //     setup() {
+      //       const { inject } = Vue;
+      //       const name = inject("name", "abc");
+      //       const changeName = inject("changeName");
+      //       const handleClick = () => {
+      //         // 避免使用，父组件可使用readonly封装
+      //         // name.value = "abc"; //不要这样使用，不符合Vue的单向数据流形式
+
+      //         changeName("cba"); //调用父组件传递过来的方法修改值
+      //       };
+      //       return { name, handleClick };
+      //     },
+      //     template: `<div @click="handleClick">{{name}}</div>`,
+      //   });
+
+      //DOM ref
+      const app = Vue.createApp({
+        setup() {
+          const { ref, onMounted } = Vue;
+          const hello = ref(null);
+          onMounted(() => {
+            console.log(hello.value);
+          });
+          return { hello };
+        },
+        template: `<div ref="hello">hello world！
+            </div>`,
+      });
+      const vm = app.mount("#root");
+    </script>
+  </html>
+</html>

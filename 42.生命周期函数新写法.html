@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生命周期新写法</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <html>
+    <script>
+      const app = Vue.createApp({
+        //beforeMount => obBeforeMount
+        //mounted => onMounted
+        //beforeUpdate => onBeforeUpdate
+        //beforeUnmount => onBeforeUnmount
+        //unmounted => onUnmounted
+        //onRenderTracked , onRenderTriggered
+        setup() {
+          const {
+            ref,
+            onBeforeMount,
+            onMounted,
+            onBeforeUpdate,
+            onUpdated,
+            onBeforeUnmount,
+            onUnmounted,
+            onRenderTracked,
+            onRenderTriggered,
+          } = Vue;
+          const name = ref("QzFrato");
+          onBeforeMount(() => {
+            console.log("onBeforeMount");
+          });
+          onMounted(() => {
+            console.log("onMounted");
+          });
+          onBeforeUpdate(() => {
+            console.log("onBeforeUpdate");
+          });
+          onUpdated(() => {
+            console.log("onUpdated");
+          });
+          onBeforeUnmount(() => {});
+          //每次渲染后重新收集响应式依赖
+          onRenderTracked(() => {
+            console.log("onRenderTracked");
+          });
+          //每次触发页面渲染时自动执行
+          onRenderTriggered(() => {
+            console.log("onRenderTriggered");
+          });
+          const handleClick = () => {
+            name.value = "abc";
+          };
+          return { name, handleClick };
+        },
+        template: `<div @click="handleClick">{{name}}</div>`,
+      });
+      const vm = app.mount("#root");
+    </script>
+  </html>
+</html>
